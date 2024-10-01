@@ -5,6 +5,7 @@ import lk.ijse.Dao.Custom.CustomerDao;
 import lk.ijse.Entity.Customer;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +24,24 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public boolean update(Customer object) {
-        return false;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(object);
+        transaction.commit();
+        session.close();
+        return true;
     }
 
     @Override
-    public boolean delete(Customer object) {
-        return false;
+    public boolean delete(Long id) {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        NativeQuery<Customer> nativeQuery = session.createNativeQuery("delete from customer where id = :id");
+        nativeQuery.setParameter("id", id);
+        nativeQuery.executeUpdate();
+        transaction.commit();
+        session.close();
+        return true;
     }
 
     @Override
@@ -38,7 +51,14 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public List<Customer> findAll() {
-        return List.of();
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        NativeQuery query = session.createNativeQuery("SELECT * FROM Customer");
+        query.addEntity(Customer.class);
+        List<Customer> resultList = query.getResultList();
+        transaction.commit();
+        session.close();
+        return resultList;
     }
 
     @Override

@@ -5,7 +5,6 @@ import lk.ijse.Dao.Custom.CustomerDao;
 import lk.ijse.Dao.DaoFactory;
 import lk.ijse.Dto.CustomerDto;
 import lk.ijse.Entity.Customer;
-import lk.ijse.Entity.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +19,14 @@ CustomerDao customerDao = (CustomerDao) DaoFactory.getDaoFactory().getDaoType(Da
 
     }
     @Override
-    public boolean update(CustomerDto customer) {
-        return false;
+    public boolean update(Long id, CustomerDto customer) {
+        Customer customer1 = new Customer(id, customer.getName(), customer.getAddress(), customer.getContact());
+        return customerDao.update(customer1);
     }
 
     @Override
-    public boolean delete(CustomerDto customer) {
-        return false;
+    public boolean delete(Long id) {
+        return customerDao.delete(id);
     }
 
     @Override
@@ -42,7 +42,12 @@ CustomerDao customerDao = (CustomerDao) DaoFactory.getDaoFactory().getDaoType(Da
     }
 
     @Override
-    public List<CustomerDto> getCustomers() {
-        return List.of();
+    public List<Customer> getCustomers() {
+        List<Customer> customerList = new ArrayList<>();
+        List<Customer> all = customerDao.findAll();
+        for (Customer customer : all) {
+            customerList.add(new Customer(customer.getId(),customer.getName(), customer.getAddress(), customer.getContact()));
+        }
+        return customerList;
     }
 }

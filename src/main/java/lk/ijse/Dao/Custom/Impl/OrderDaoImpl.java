@@ -25,7 +25,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public boolean delete(Order object) {
+    public boolean delete(Long id) {
         return false;
     }
 

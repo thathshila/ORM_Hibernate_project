@@ -17,9 +17,8 @@
       <Button fx:id="btnDelete" layoutX="333.0" layoutY="175.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="26.0" prefWidth="60.0" text="DELETE" />
       <Button fx:id="btnBack" layoutX="333.0" layoutY="223.0" mnemonicParsing="false" onAction="#btnBackOnAction" prefHeight="26.0" prefWidth="60.0" text="BACK" />
       <Text layoutX="196.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MANAGE  CUSTOMER" wrappingWidth="118.13671875" />
-      <TableView fx:id="tblCustomer" layoutX="85.0" layoutY="280.0" prefHeight="135.0" prefWidth="294.0">
+      <TableView fx:id="tblCustomer" layoutX="85.0" layoutY="280.0" prefHeight="135.0" prefWidth="222.0">
         <columns>
-          <TableColumn fx:id="colId" prefWidth="75.0" text="ID" />
           <TableColumn fx:id="colName" prefWidth="75.0" text="NAME" />
             <TableColumn fx:id="colAddress" prefWidth="75.0" text="ADDRESSS" />
             <TableColumn fx:id="colContact" prefWidth="75.0" text="CONTACT" />

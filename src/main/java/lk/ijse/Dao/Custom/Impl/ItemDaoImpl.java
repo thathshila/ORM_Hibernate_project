@@ -26,7 +26,7 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     @Override
-    public boolean delete(Item object) {
+    public boolean delete(Long id) {
         return false;
     }
 

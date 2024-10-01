@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import lk.ijse.Bo.BoFactory;
 import lk.ijse.Bo.Custom.CustomerBo;
 import lk.ijse.Dto.CustomerDto;
+import lk.ijse.Entity.Customer;
 import lk.ijse.Entity.Tm.CustomerTm;
 
 import java.io.IOException;
@@ -62,11 +63,41 @@ public class CustomerFormController {
     @FXML
     private TextField txtName;
 
+    Long selectedId;
+
     CustomerBo customerBo = (CustomerBo) BoFactory.getBoFactory().getBoType(BoFactory.BoType.CUSTOMER);
 
+    public void initialize() {
+        setTable();
+        setCellValueFactory();
+        selectTableRow();
+    }
+    private void setTable() {
+        ObservableList<CustomerTm> customerTms = FXCollections.observableArrayList();
+        List<Customer> all = customerBo.getCustomers();
+        for (Customer customer : all){
+            CustomerTm customerTm = new CustomerTm(customer.getId(),customer.getName(), customer.getAddress(), customer.getContact());
+            customerTms.add(customerTm);
+        }
+        tblCustomer.setItems(customerTms);
+    }
 
+    private void setCellValueFactory() {
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colContact.setCellValueFactory(new PropertyValueFactory<>("contact"));
+    }
 
-
+    private void selectTableRow() {
+        tblCustomer.setOnMouseClicked(event -> {
+            int focusedIndex = tblCustomer.getFocusModel().getFocusedIndex();
+            CustomerTm customerTm = tblCustomer.getItems().get(focusedIndex);
+            txtName.setText(customerTm.getName());
+            txtAddress.setText(customerTm.getAddress());
+            txtContact.setText(String.valueOf(customerTm.getContact()));
+            selectedId = customerTm.getId();
+        });
+    }
     @FXML
     void btnBackOnAction(ActionEvent event) throws IOException {
         FXMLLoader loader= new FXMLLoader(getClass().getResource("/view/DashboardForm.fxml"));
@@ -85,6 +116,7 @@ public class CustomerFormController {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+        customerBo.delete(selectedId);
     }
 
     @FXML
@@ -99,7 +131,12 @@ public class CustomerFormController {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
+        String cus_name = txtName.getText();
+        String cus_address = txtAddress.getText();
+        String cus_contact = txtContact.getText();
+
+        CustomerDto customerDto = new CustomerDto(cus_name,cus_address,cus_contact);
+        customerBo.update(selectedId,customerDto);
 
     }
-
 }
