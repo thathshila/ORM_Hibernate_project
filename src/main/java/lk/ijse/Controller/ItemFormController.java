@@ -135,7 +135,12 @@ public class ItemFormController {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
+        String item_name = txtName.getText();
+        double price = Double.parseDouble(txtPrice.getText());
+        int qty = Integer.parseInt(txtQty.getText());
 
+        ItemDto itemDto = new ItemDto(item_name, price, qty);
+        itemBo.update(selectedCode,itemDto);
     }
 
 }

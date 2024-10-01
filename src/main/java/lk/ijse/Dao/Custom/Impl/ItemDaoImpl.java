@@ -23,7 +23,12 @@ public class ItemDaoImpl implements ItemDao {
 
     @Override
     public boolean update(Item object) {
-        return false;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(object);
+        transaction.commit();
+        session.close();
+        return true;
     }
 
     @Override
@@ -39,7 +44,7 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     @Override
-    public Item findById(String id) {
+    public Item findById(Long id) {
         return null;
     }
 

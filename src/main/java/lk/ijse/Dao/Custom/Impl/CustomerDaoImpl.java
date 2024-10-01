@@ -45,9 +45,34 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Customer findById(String id) {
-        return null;
+    public Customer findById(Long id) {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = null;
+        Customer customer = null;
+
+        try {
+            transaction = session.beginTransaction();
+
+            // Using native query to fetch the customer by ID
+            NativeQuery<Customer> nativeQuery = session.createNativeQuery("SELECT * FROM customer WHERE id = :id", Customer.class);
+            nativeQuery.setParameter("id", id);
+
+            customer = nativeQuery.uniqueResult(); // Fetching single result
+
+            transaction.commit(); // Committing the transaction
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback(); // Rollback in case of an exception
+            }
+            e.printStackTrace(); // Logging the error
+        } finally {
+            session.close(); // Closing the session
+        }
+
+        return customer; // Returning the fetched customer
     }
+
+
 
     @Override
     public List<Customer> findAll() {

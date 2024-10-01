@@ -9,7 +9,7 @@ import java.util.List;
 public interface ItemBo extends SuperBo {
     public boolean save(ItemDto itemDto);
     public boolean delete(Long code);
-    public boolean update(ItemDto itemDto);
+    public boolean update(Long code,ItemDto itemDto);
     public ItemDto findById(Long code);
     public List<Item> getItems();
 

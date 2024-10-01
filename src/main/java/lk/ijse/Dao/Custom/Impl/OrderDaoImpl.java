@@ -30,7 +30,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Order findById(String id) {
+    public Order findById(Long id) {
         return null;
     }
 

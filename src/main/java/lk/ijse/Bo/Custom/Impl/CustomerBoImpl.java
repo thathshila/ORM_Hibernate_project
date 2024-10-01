@@ -31,14 +31,12 @@ CustomerDao customerDao = (CustomerDao) DaoFactory.getDaoFactory().getDaoType(Da
 
     @Override
     public CustomerDto getCustomer(Long id) {
-//       Customer customer = customerDao.findById(id);
-//       CustomerDto customerDto = new CustomerDto();
-//       customerDto.setId(customer.getId());
-//       customerDto.setName(customer.getName());
-//       customerDto.setAddress(customer.getAddress());
-//       customerDto.setContact(customer.getContact());
-//       return customerDto;
-        return null;
+       Customer customer = customerDao.findById(id);
+       CustomerDto customerDto = new CustomerDto();
+       customerDto.setName(customer.getName());
+       customerDto.setAddress(customer.getAddress());
+       customerDto.setContact(customer.getContact());
+       return customerDto;
     }
 
     @Override

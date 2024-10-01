@@ -24,8 +24,9 @@ public class ItemBoImpl implements ItemBo {
     }
 
     @Override
-    public boolean update(ItemDto itemDto) {
-        return false;
+    public boolean update(Long code, ItemDto itemDto) {
+        Item item = new Item(code, itemDto.getName(), itemDto.getPrice(), itemDto.getQty());
+        return itemDao.update(item);
     }
 
     @Override
