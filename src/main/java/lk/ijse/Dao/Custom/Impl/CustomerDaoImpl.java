@@ -33,11 +33,11 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean delete(Long code) {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
         NativeQuery<Customer> nativeQuery = session.createNativeQuery("delete from customer where id = :id");
-        nativeQuery.setParameter("id", id);
+        nativeQuery.setParameter("id", code);
         nativeQuery.executeUpdate();
         transaction.commit();
         session.close();

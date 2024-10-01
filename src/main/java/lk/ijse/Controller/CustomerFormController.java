@@ -67,10 +67,10 @@ public class CustomerFormController {
 
     CustomerBo customerBo = (CustomerBo) BoFactory.getBoFactory().getBoType(BoFactory.BoType.CUSTOMER);
 
-    public void initialize() {
-        setTable();
-        setCellValueFactory();
-        selectTableRow();
+     public void initialize() {
+            setTable();
+            setCellValueFactory();
+            selectTableRow();
     }
     private void setTable() {
         ObservableList<CustomerTm> customerTms = FXCollections.observableArrayList();

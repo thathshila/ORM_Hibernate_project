@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ItemTm {
-    private String code;
+    private Long code;
     private String name;
     private double price;
     private int qty;

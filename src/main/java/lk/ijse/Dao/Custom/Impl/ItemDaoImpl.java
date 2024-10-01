@@ -5,6 +5,7 @@ import lk.ijse.Dao.Custom.ItemDao;
 import lk.ijse.Entity.Item;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,15 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     @Override
-    public boolean delete(Long id) {
-        return false;
+    public boolean delete(Long code) {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        NativeQuery<Item> query = session.createNativeQuery("delete from item where code = :code");
+        query.setParameter("code", code);
+        query.executeUpdate();
+        transaction.commit();
+        session.close();
+        return true;
     }
 
     @Override
@@ -37,7 +45,14 @@ public class ItemDaoImpl implements ItemDao {
 
     @Override
     public List<Item> findAll() {
-        return List.of();
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        NativeQuery query = session.createNativeQuery("select * from item");
+        query.addEntity(Item.class);
+        List<Item> list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
     }
 
     @Override

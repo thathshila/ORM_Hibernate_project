@@ -6,6 +6,7 @@ import lk.ijse.Dao.DaoFactory;
 import lk.ijse.Dto.ItemDto;
 import lk.ijse.Entity.Item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemBoImpl implements ItemBo {
@@ -18,8 +19,8 @@ public class ItemBoImpl implements ItemBo {
     }
 
     @Override
-    public boolean delete(ItemDto itemDto) {
-        return false;
+    public boolean delete(Long code) {
+        return itemDao.delete(code);
     }
 
     @Override
@@ -40,7 +41,12 @@ public class ItemBoImpl implements ItemBo {
     }
 
     @Override
-    public List<ItemDto> getItems() {
-        return List.of();
-    }
+    public List<Item> getItems() {
+       List<Item> itemList = new ArrayList<>();
+       List<Item> allItems = itemDao.findAll();
+       for (Item item : allItems) {
+           itemList.add(new Item(item.getCode(),item.getName(), item.getPrice(), item.getQty()));
+       }
+       return itemList;
+   }
 }
