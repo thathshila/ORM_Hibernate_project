@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="anpOrder" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.Controller.OrderFormController">
+   <children>
+      <Text layoutX="251.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PLACE ORDER" />
+      <TextField fx:id="txmId" layoutX="83.0" layoutY="86.0" promptText="Id" />
+      <TextField fx:id="txtCustomerName" layoutX="83.0" layoutY="125.0" promptText="customerName" />
+      <TextField fx:id="txtItemName" layoutX="84.0" layoutY="167.0" promptText="itemName" />
+      <TextField fx:id="txtQuantity" layoutX="308.0" layoutY="208.0" promptText="quantity" />
+      <ComboBox fx:id="comboCustomerId" layoutX="300.0" layoutY="86.0" onAction="#comboCustomerIdOnAction" prefWidth="150.0" promptText="customerId" />
+      <ComboBox fx:id="comboItemCode" layoutX="300.0" layoutY="125.0" onAction="#comboItemCodeOnAction" prefWidth="150.0" promptText="itemCode" />
+      <Text layoutX="308.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available qty" />
+      <Label fx:id="lblAvailableQty" layoutX="406.0" layoutY="162.0" prefHeight="36.0" prefWidth="44.0" style="-fx-border-color: red;" />
+      <TextField fx:id="txtPrice" layoutX="85.0" layoutY="208.0" promptText="price" />
+      <Button fx:id="btnAddToCart" layoutX="513.0" layoutY="167.0" mnemonicParsing="false" onAction="#btnAddToCartOnAction" text="addToCart" />
+      <Button fx:id="btnBack" layoutX="523.0" layoutY="112.0" mnemonicParsing="false" onAction="#btnBackOnAction" text="Back" />
+      <TableView fx:id="tblOrder" layoutX="83.0" layoutY="245.0" prefHeight="134.0" prefWidth="378.0">
+        <columns>
+          <TableColumn fx:id="colItemName" prefWidth="75.0" text="ItemName" />
+          <TableColumn fx:id="colQuantity" prefWidth="75.0" text="Quantity" />
+            <TableColumn fx:id="colPrice" prefWidth="75.0" text="Price" />
+            <TableColumn fx:id="colTotal" prefWidth="75.0" text="Total" />
+            <TableColumn fx:id="colRemove" prefWidth="75.0" text="Remove" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnPlaceOrder" layoutX="504.0" layoutY="221.0" mnemonicParsing="false" onAction="#btnPlaceOrderOnAction" text="Place Order" />
+      <Text layoutX="523.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Balance" />
+      <Label fx:id="lblBalance" layoutX="516.0" layoutY="303.0" prefHeight="47.0" prefWidth="51.0" style="-fx-border-color: red;" />
+   </children>
+</AnchorPane>

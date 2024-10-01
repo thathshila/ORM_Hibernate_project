@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane fx:id="anpDashboard" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.Controller.DashboardFormController">
+   <children>
+      <Button fx:id="btnCustomer" layoutX="128.0" layoutY="158.0" mnemonicParsing="false" onAction="#btnCustomerOnAction" prefHeight="66.0" prefWidth="68.0" text="customer" />
+      <Button fx:id="btnItem" layoutX="284.0" layoutY="158.0" mnemonicParsing="false" onAction="#btnItemOnAction" prefHeight="66.0" prefWidth="68.0" text="item" />
+      <Button fx:id="btnOrder" layoutX="429.0" layoutY="158.0" mnemonicParsing="false" onAction="#btnOrderOnAction" prefHeight="66.0" prefWidth="68.0" text="order" />
+   </children>
+</AnchorPane>
