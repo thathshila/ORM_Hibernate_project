@@ -2,6 +2,7 @@ package lk.ijse.Dao.Custom.Impl;
 
 import lk.ijse.Config.FactoryConfiguration;
 import lk.ijse.Dao.Custom.ItemDao;
+import lk.ijse.Entity.Customer;
 import lk.ijse.Entity.Item;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -45,7 +46,28 @@ public class ItemDaoImpl implements ItemDao {
 
     @Override
     public Item findById(Long id) {
-        return null;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = null;
+        Item item = null;
+
+        try {
+            transaction = session.beginTransaction();
+
+            NativeQuery<Item> query = session.createNativeQuery("select * from item where code = :code", Item.class);
+            query.setParameter("code", id);
+
+            item = query.uniqueResult();
+            transaction.commit(); // Committing the transaction
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback(); // Rollback in case of an exception
+            }
+            e.printStackTrace(); // Logging the error
+        } finally {
+            session.close(); // Closing the session
+        }
+
+        return item;
     }
 
     @Override

@@ -31,14 +31,12 @@ public class ItemBoImpl implements ItemBo {
 
     @Override
     public ItemDto findById(Long code) {
-//        Item item = itemDao.findById(code);
-//        ItemDto itemDto = new ItemDto();
-//        itemDto.setCode(item.getCode());
-//        itemDto.setName(item.getName());
-//        itemDto.setPrice(item.getPrice());
-//        itemDto.setQty(item.getQty());
-//        return itemDto;
-        return null;
+        Item item = itemDao.findById(code);
+        ItemDto itemDto = new ItemDto();
+        itemDto.setName(item.getName());
+        itemDto.setPrice(item.getPrice());
+        itemDto.setQty(item.getQty());
+        return itemDto;
     }
 
     @Override

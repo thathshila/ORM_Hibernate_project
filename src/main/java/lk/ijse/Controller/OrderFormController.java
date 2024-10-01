@@ -84,7 +84,7 @@ public class OrderFormController {
     private TextField txtQuantity;
 
     @FXML
-            private Label lblBalance;
+    private Label lblBalance;
 
     ItemDao itemDao = (ItemDao) DaoFactory.getDaoFactory().getDaoType(DaoFactory.DaoType.ITEM);
     CustomerDao customerDao = (CustomerDao) DaoFactory.getDaoFactory().getDaoType(DaoFactory.DaoType.CUSTOMER);
@@ -103,7 +103,7 @@ public class OrderFormController {
         colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
-        colRemove.setCellValueFactory(new PropertyValueFactory<>("remove"));
+        colRemove.setCellValueFactory(new PropertyValueFactory<>("btnRemove"));
     }
 
     private void setItemCode(){
@@ -135,23 +135,28 @@ public class OrderFormController {
         btnRemove.setCursor(Cursor.HAND);
 
         btnRemove.setOnAction((e) -> {
-            ButtonType yes = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
-            ButtonType no = new ButtonType("no", ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+            ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-            Optional<ButtonType> type = new Alert(Alert.AlertType.INFORMATION, "Are you sure to remove?", yes, no).showAndWait();
+            Optional<ButtonType> type = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove?", yes, no).showAndWait();
 
             if (type.orElse(no) == yes) {
                 int selectedIndex = tblOrder.getSelectionModel().getSelectedIndex();
-                obList.remove(selectedIndex);
-
-                tblOrder.refresh();
-                calculateNetTotal();
+                if (selectedIndex >= 0) {
+                    obList.remove(selectedIndex);
+                    tblOrder.refresh();
+                    calculateNetTotal();
+                } else {
+                    new Alert(Alert.AlertType.WARNING, "Please select an item to remove").show();
+                }
             }
         });
-        for (int i = 0; i < tblOrder.getItems().size(); i++) {
-            if (name.equals(txtItemName.getText())) {
 
-                OrderTm tm = obList.get(i);
+        // Check if the item already exists in the table
+        for (int i = 0; i < tblOrder.getItems().size(); i++) {
+            OrderTm tm = obList.get(i);
+            if (tm.getItemName().equals(name)) {
+                // If the item exists, update its quantity and total
                 quantity += tm.getQuantity();
                 total = quantity * price;
 
@@ -159,18 +164,18 @@ public class OrderFormController {
                 tm.setTotal(total);
 
                 tblOrder.refresh();
-
                 calculateNetTotal();
-                return;
+                return; // Exit the method since the item was found and updated
             }
         }
+
+        // If the item does not exist, add it to the order list
         OrderTm tm = new OrderTm(name, quantity, price, total, btnRemove);
         obList.add(tm);
-
         tblOrder.setItems(obList);
         calculateNetTotal();
-
     }
+
 
     private void calculateNetTotal() {
         int netBalance = 0;
@@ -206,7 +211,7 @@ public class OrderFormController {
     public void comboCustomerIdOnAction(ActionEvent actionEvent) {
         Long customerId = comboCustomerId.getValue();
         CustomerDto customerDto = customerBo.getCustomer(customerId);
-        if (customerDto == null) {
+        if (customerDto != null) {
             txtCustomerName.setText(customerDto.getName());
         }
     }
@@ -215,6 +220,7 @@ public class OrderFormController {
         Long itemCode = comboItemCode.getValue();
         ItemDto item = itemBo.findById(itemCode);
         if (item != null) {
+            txtItemName.setText(item.getName());
             lblAvailableQty.setText(String.valueOf(item.getQty()));
             txtPrice.setText(String.valueOf(item.getPrice()));
         }
