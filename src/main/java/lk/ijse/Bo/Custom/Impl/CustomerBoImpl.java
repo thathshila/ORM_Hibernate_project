@@ -16,7 +16,6 @@ CustomerDao customerDao = (CustomerDao) DaoFactory.getDaoFactory().getDaoType(Da
     public boolean save(CustomerDto customer) {
         Customer customer1 = new Customer(1L, customer.getName(), customer.getAddress(), customer.getContact());
         return customerDao.save(customer1);
-
     }
     @Override
     public boolean update(Long id, CustomerDto customer) {

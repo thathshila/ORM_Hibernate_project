@@ -38,4 +38,29 @@ public class OrderDaoImpl implements OrderDao {
     public List<Order> findAll() {
         return List.of();
     }
+
+    @Override
+    public Long getCurrentId() {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        Long nextId;
+
+        Object order = session.createQuery("SELECT O.orderId FROM Order O ORDER BY O.orderId DESC LIMIT 1").uniqueResult();
+        if (order != null) {
+            String orderId = order.toString();
+            String prefix = "O";
+            String idWithoutPrefix = orderId.replace(prefix, "");
+
+            Long idNum = Long.parseLong(idWithoutPrefix);
+            nextId = idNum + 1;
+        } else {
+            // Initial ID if no existing records
+            nextId = 1L;
+        }
+
+        transaction.commit();
+        session.close();
+
+        return nextId;
+    }
 }

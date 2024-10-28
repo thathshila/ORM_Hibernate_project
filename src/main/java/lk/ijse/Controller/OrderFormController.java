@@ -17,6 +17,7 @@ import lk.ijse.Bo.Custom.ItemBo;
 import lk.ijse.Bo.Custom.OrderBo;
 import lk.ijse.Dao.Custom.CustomerDao;
 import lk.ijse.Dao.Custom.ItemDao;
+import lk.ijse.Dao.Custom.OrderDao;
 import lk.ijse.Dao.DaoFactory;
 import lk.ijse.Dto.CustomerDto;
 import lk.ijse.Dto.ItemDto;
@@ -69,7 +70,7 @@ public class OrderFormController {
     private TableView<OrderTm> tblOrder;
 
     @FXML
-    private TextField txmId;
+    private Label txmId;
 
     @FXML
     private TextField txtCustomerName;
@@ -88,6 +89,7 @@ public class OrderFormController {
 
     ItemDao itemDao = (ItemDao) DaoFactory.getDaoFactory().getDaoType(DaoFactory.DaoType.ITEM);
     CustomerDao customerDao = (CustomerDao) DaoFactory.getDaoFactory().getDaoType(DaoFactory.DaoType.CUSTOMER);
+    OrderDao orderDao = (OrderDao) DaoFactory.getDaoFactory().getDaoType(DaoFactory.DaoType.ORDER);
     OrderBo orderBo = (OrderBo) BoFactory.getBoFactory().getBoType(BoFactory.BoType.ORDER);
     ItemBo itemBo = (ItemBo) BoFactory.getBoFactory().getBoType(BoFactory.BoType.ITEM);
     CustomerBo customerBo = (CustomerBo) BoFactory.getBoFactory().getBoType(BoFactory.BoType.CUSTOMER);
@@ -96,6 +98,7 @@ public class OrderFormController {
         setCellValueFactory();
         setItemCode();
         setCustomerId();
+        generateNewOrderId();
     }
 
     private void setCellValueFactory(){
@@ -123,6 +126,7 @@ public class OrderFormController {
         }
         comboCustomerId.setItems(id);
     }
+
 
     private ObservableList<OrderTm> obList = FXCollections.observableArrayList();
     @FXML
@@ -224,5 +228,13 @@ public class OrderFormController {
             lblAvailableQty.setText(String.valueOf(item.getQty()));
             txtPrice.setText(String.valueOf(item.getPrice()));
         }
+    }
+
+    public void generateNewOrderId(){
+        //get current id from database
+        //get current id+1
+        //return new id
+       Long nextId = orderDao.getCurrentId();
+        txmId.setText(String.valueOf(nextId));
     }
 }
