@@ -21,10 +21,16 @@ import lk.ijse.Dao.Custom.OrderDao;
 import lk.ijse.Dao.DaoFactory;
 import lk.ijse.Dto.CustomerDto;
 import lk.ijse.Dto.ItemDto;
+import lk.ijse.Dto.OrderDto;
+import lk.ijse.Entity.Customer;
+import lk.ijse.Entity.Item;
+import lk.ijse.Entity.Order;
+import lk.ijse.Entity.OrderDetail;
 import lk.ijse.Entity.Tm.OrderTm;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -131,6 +137,7 @@ public class OrderFormController {
     private ObservableList<OrderTm> obList = FXCollections.observableArrayList();
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
+        Long id = comboItemCode.getValue();
         String name = txtItemName.getText();
         int quantity = Integer.parseInt(txtQuantity.getText());
         double price = Double.parseDouble(txtPrice.getText());
@@ -174,7 +181,7 @@ public class OrderFormController {
         }
 
         // If the item does not exist, add it to the order list
-        OrderTm tm = new OrderTm(name, quantity, price, total, btnRemove);
+        OrderTm tm = new OrderTm(id,name, quantity, price, total, btnRemove);
         obList.add(tm);
         tblOrder.setItems(obList);
         calculateNetTotal();
@@ -209,7 +216,50 @@ public class OrderFormController {
 
     @FXML
     void btnPlaceOrderOnAction(ActionEvent event) {
+        //Todo get customer by customer_id
+        Customer customer = customerDao.getCustomerById(comboCustomerId.getValue());
 
+        //Todo save order
+        OrderDto orderDto = new OrderDto();
+        orderDto.setTotal(Double.parseDouble(lblBalance.getText()));
+        orderDto.setCustomer(customer);
+        orderBo.save(orderDto);
+
+        //Todo save orderDetails
+        Order order = orderDao.getOrderById(Long.valueOf(txmId.getText()));
+        System.out.println(order);
+
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        List<OrderTm> items = tblOrder.getItems();
+
+        for (OrderTm orderTm : items) {
+            Item item = itemDao.getItemById(orderTm.getItemId());
+            int quantity = orderTm.getQuantity();
+            double total = orderTm.getTotal();
+
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setQuantity(quantity);
+            orderDetail.setOrder(order);
+            orderDetail.setItem(item);
+            orderDetail.setTotal_price(total);
+            orderDetails.add(orderDetail);
+            System.out.println(orderDetail);
+        }
+        orderDao.saveOrderDetails(orderDetails);
+
+        //Todo update item
+//       for (OrderTm orderTm : items){
+//            itemDao.updateQty(orderTm.getItemId(),orderTm.getQuantity());
+//       }
+        for (OrderTm orderTm : items) {
+            boolean success = itemDao.updateQty(orderTm.getItemId(), orderTm.getQuantity());
+            System.out.println(orderTm.getItemId());
+            System.out.println(orderTm.getQuantity());
+            if (!success) {
+                System.out.println("Failed to update quantity for item ID: " + orderTm.getItemId());
+                // Optional: Handle the failure, such as logging or reattempting the update
+            }
+        }
     }
 
     public void comboCustomerIdOnAction(ActionEvent actionEvent) {
@@ -238,3 +288,4 @@ public class OrderFormController {
         txmId.setText(String.valueOf(nextId));
     }
 }
+

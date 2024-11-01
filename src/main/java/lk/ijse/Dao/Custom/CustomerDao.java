@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CustomerDao extends CrudDao<Customer> {
     List<Long> getCustomerId();
+
+    Customer getCustomerById(Long id);
 }

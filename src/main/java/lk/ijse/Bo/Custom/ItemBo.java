@@ -14,3 +14,4 @@ public interface ItemBo extends SuperBo {
     public List<Item> getItems();
 
 }
+

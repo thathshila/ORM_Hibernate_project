@@ -6,6 +6,7 @@ import lk.ijse.Entity.Customer;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,5 +115,36 @@ public class CustomerDaoImpl implements CustomerDao {
         return customerIds;
 
     }
+
+    @Override
+    public Customer getCustomerById(Long id) {
+        Session session = null;
+        Transaction transaction = null;
+        Customer customer = null;
+
+        try {
+            session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+
+            NativeQuery<Customer> query = session.createNativeQuery("SELECT * FROM customer WHERE id = :id", Customer.class);
+            query.setParameter("id", id);
+
+            customer = query.uniqueResult(); // Execute query and set the result to customer
+
+            transaction.commit(); // Commit the transaction if successful
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback(); // Rollback transaction if an error occurs
+            }
+            e.printStackTrace(); // Log the exception for debugging
+        } finally {
+            if (session != null) {
+                session.close(); // Ensure session is closed
+            }
+        }
+
+        return customer;
     }
+
+}
 

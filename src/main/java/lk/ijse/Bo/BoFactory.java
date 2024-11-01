@@ -12,7 +12,7 @@ public class BoFactory {
     }
 
     public enum BoType {
-        CUSTOMER,ITEM,ORDER
+        CUSTOMER,ITEM,ORDER,ORDER_DETAIL
     }
 
     public static BoFactory getBoFactory() {
@@ -27,6 +27,8 @@ public class BoFactory {
                 return new ItemBoImpl();
                 case ORDER:
                     return new OrderBoImpl();
+                    case ORDER_DETAIL:
+                        return new OrderBoImpl();
             default:
                 return null;
         }
